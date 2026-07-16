@@ -122,6 +122,6 @@ https://python.org
 
 <div align="center">
 
-**Made with ❤️ by Simorgh Lab**
+**Made with ❤️ by persia Lab**
 
 </div>
