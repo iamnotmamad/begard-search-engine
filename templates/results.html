@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتایج: {{ query }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="results-header">
+            <a href="/" class="home-link">بگرد!</a>
+            <div class="search-wrapper small-wrapper">
+                <form action="/search" method="get" class="search-form small-form" autocomplete="off">
+                    <input type="text" name="q" value="{{ query }}" id="search-input" class="search-input">
+                    <button type="submit" class="search-button">بگرد</button>
+                </form>
+                <div class="suggestions-dropdown" id="suggestions-box"></div>
+            </div>
+        </header>
+
+        {% if auto_corrected and suggestion %}
+        <div class="correction-notice">
+            <p>نمایش نتایج برای <a href="/search?q={{ suggestion | urlencode }}"><strong>{{ suggestion }}</strong></a></p>
+            <p><a href="/search?q={{ query | urlencode }}">به‌جای آن جست‌وجو کن: {{ query }}</a></p>
+        </div>
+        {% elif suggestion and not results %}
+        <div class="suggestion-box">
+            <p>آیا منظور شما <a href="/search?q={{ suggestion | urlencode }}"><em>{{ suggestion }}</em></a> بود؟</p>
+        </div>
+        {% endif %}
+
+        <div class="results-info">حدود {{ count }} نتیجه ({{ query }})</div>
+
+        {% if word_suggestions %}
+        <div class="word-suggestions">
+            <span>پیشنهاد کلمات: </span>
+            {% for word in word_suggestions %}
+                <a href="/search?q={{ word | urlencode }}" class="word-chip">{{ word }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if results %}
+            <div class="results-list">
+                {% for result in results %}
+                    {% if result.sitelinks %}
+                        <div class="result-card rich-snippet">
+                            <div class="result-main">
+                                <div class="result-title-row">
+                                    <span class="favicon-wrapper">
+                                        <img class="favicon" src="{{ result.favicon }}" alt="" width="20" height="20"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                                        <span class="favicon-fallback" style="display:none;">–</span>
+                                    </span>
+                                    <a href="{{ result.url }}" class="result-title" target="_blank" rel="noopener">{{ result.title }}</a>
+                                </div>
+                                <p class="result-domain">{{ result.domain }}</p>
+                                <p class="result-desc">{{ result.description }}</p>
+                            </div>
+                            <div class="sitelinks">
+                                {% for sitelink in result.sitelinks %}
+                                    <a href="{{ sitelink.url }}" class="sitelink-item">
+                                        <span class="sitelink-title">{{ sitelink.title }}</span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            <a href="/search?q=site:{{ result.domain }}" class="more-results">نتایج بیشتر از {{ result.domain }} »</a>
+                        </div>
+                    {% else %}
+                        <div class="result-card">
+                            <div class="result-text">
+                                <div class="result-title-row">
+                                    <span class="favicon-wrapper">
+                                        <img class="favicon" src="{{ result.favicon }}" alt="" width="20" height="20"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                                        <span class="favicon-fallback" style="display:none;">–</span>
+                                    </span>
+                                    <a href="{{ result.url }}" class="result-title" target="_blank" rel="noopener">{{ result.title }}</a>
+                                </div>
+                                <p class="result-domain">{{ result.domain }}</p>
+                                <p class="result-desc">{{ result.description }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {{ pagination(page, total_pages, query) }}
+        {% endif %}
+
+        <div class="feedback-box">
+            <p>آیا از نتایج راضی هستید؟</p>
+            <div class="vote-buttons" data-query="{{ query }}">
+                <button class="vote-btn like-btn" data-vote="like">👍 بله، مفید بود</button>
+                <button class="vote-btn dislike-btn" data-vote="dislike">👎 خیر، مفید نبود</button>
+            </div>
+            <span class="feedback-msg"></span>
+        </div>
+    </div>
+    <footer>
+        <p>ما یک گروه کوچک برنامه‌نویسی هستیم و قصد نداریم با تحمیل برنامهٔ خود جایگزین موتورهای جست‌وجوی جهانی و مطرح شویم و هیچ ادعایی دربارهٔ آن نداریم ❤️</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

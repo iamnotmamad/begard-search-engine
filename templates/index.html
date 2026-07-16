@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بگرد!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container home-container">
+        <h1 class="logo">🔍 بگرد!</h1>
+        <div class="search-wrapper">
+            <form action="/search" method="get" class="search-form" autocomplete="off">
+                <input type="text" name="q" placeholder="جست‌وجو کنید..." id="main-search" class="search-input" autofocus>
+                <button type="submit" class="search-button">بگرد</button>
+            </form>
+            <div class="suggestions-dropdown" id="suggestions-box"></div>
+        </div>
+    </div>
+    <footer>
+        <p>ما یک گروه کوچک برنامه‌نویسی هستیم و قصد نداریم با تحمیل برنامهٔ خود جایگزین موتورهای جست‌وجوی جهانی و مطرح شویم و هیچ ادعایی دربارهٔ آن نداریم ❤️</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
