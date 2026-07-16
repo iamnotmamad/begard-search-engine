@@ -4,7 +4,7 @@ Begard یک موتور جستجوی سبک و متن‌باز است که صفح
 
 
 <p align="center">
-  <img src="assets/shot.png" width="600">
+  <img src="banner/shot.png" width="600">
 </p>
 
 
